@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const seeders = require("./seeders")
 
 module.exports = async () => {
     try {
@@ -9,6 +10,8 @@ module.exports = async () => {
             console.log("Error mientras se tenía conexión con la base de datos.",
                 error);
         });
+
+        await seeders();
 
     } catch (error) {
         console.error("Error al iniciar conexión con la base de datos.", error);

@@ -1,3 +1,3 @@
 {
-  "ext": "js, html, css, njk, json, .env,"
+  "ext": "js, html, css, njk, json, env,"
 }
