@@ -44,14 +44,14 @@ const userSchema = new Schema(
 //////hasheamos las password antes de guardar//////
 userSchema.pre("save", async function (next) {
     if (this.isModified("password") || this.isNew) {
-        this.passowrd = await bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password, 10);
     }
     return next();
 });
 
 //////agregamos un metodo para comparar contraseñas//////
 userSchema.methods.comparePassword = async function (candidatePassword) {
-    const match = await bcrypt.compare(candidatePassword, this.passowrd);
+    const match = await bcrypt.compare(candidatePassword, this.password);
     return match;
 };
 

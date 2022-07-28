@@ -4,9 +4,9 @@ const userSeeder = require("./userSeeder")
 module.exports = async () => {
     // Seeders:
     if (process.env.DEV) {
-        await mongoose.connection.dropDatabase()
         await userSeeder();
     }
+    await mongoose.connection.dropDatabase()
 
 
 };
