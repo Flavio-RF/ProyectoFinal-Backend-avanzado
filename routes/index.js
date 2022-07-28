@@ -1,10 +1,11 @@
-const express = require("express");
-const router = express.Router();
+const authRoutes = require("./authRoutes")
+const userRoutes = require("./userRoutes")
 
 
 
-router.get("/", (req, res) => {
-    res.json("helllo world");
-})
+module.exports = (app) => {
 
-module.exports = router;
+    app.use(authRoutes);
+    app.use(userRoutes);
+
+}

@@ -10,8 +10,8 @@ const userSchema = new Schema(
             lowercase: true,
             unique: true,
             validate: {
-                validator: function (v) {
-                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+                validator: function (email) {
+                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
                 },
                 message: "Please enter a valid email"
             },
@@ -29,6 +29,12 @@ const userSchema = new Schema(
             minLenght: 6,
             maxLenght: 30,
         },
+        tweet: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Tweet",
+            },
+        ],
     },
     {
         timestamps: true,
