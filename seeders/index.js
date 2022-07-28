@@ -5,8 +5,8 @@ module.exports = async () => {
     // Seeders:
     if (process.env.DEV) {
         await userSeeder();
+        await mongoose.connection.dropDatabase()
     }
-    await mongoose.connection.dropDatabase()
 
 
 };

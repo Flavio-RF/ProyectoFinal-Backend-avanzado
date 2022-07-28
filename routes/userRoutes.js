@@ -7,8 +7,8 @@ const authController = require("../controllers/authController")
 // app.get("/users",)
 // app.get("/session",)
 
-router.post("/users", userController.newUser)
-router.post("/sessions", authController.newToken)
+router.post("/users", userController.register)
+router.post("/sessions", authController.login)
 
 
 
