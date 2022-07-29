@@ -1,14 +1,18 @@
 const express = require("express")
 const router = express.Router()
-const tweetController = require("../controllers/tweetController")
+const privateController = require("../controllers/privateController")
 const { expressjwt } = require("express-jwt")
+
 
 router.get("/tweets", expressjwt({
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"],
-}), tweetController.showTweets)
+}), privateController.showTweets)
 
 
-// router.post("tweet",)
+router.post("/tweets", expressjwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+}), privateController.storeTweets)
 
 module.exports = router

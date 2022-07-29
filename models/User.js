@@ -9,13 +9,6 @@ const userSchema = new Schema(
             trim: true,
             lowercase: true,
             unique: true,
-            validate: {
-                validator: function (email) {
-                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-                },
-                message: "Please enter a valid email"
-            },
-            required: [true, "Email required"]
         },
         username: {
             type: String,
@@ -49,6 +42,8 @@ userSchema.pre("save", async function (next) {
     return next();
 });
 
+
+
 //////agregamos un metodo para comparar contraseñas//////
 userSchema.methods.comparePassword = async function (candidatePassword) {
     const match = await bcrypt.compare(candidatePassword, this.password);
@@ -59,7 +54,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 // cuando se devuelve un objeto al cliente, se le quita el campo password.
 userSchema.methods.toJSON = function () {
     const user = this.toObject();
-    delete user.passowrd;
+    delete user.password;
     return user;
 };
 

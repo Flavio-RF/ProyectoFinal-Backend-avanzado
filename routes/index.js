@@ -8,4 +8,5 @@ module.exports = (app) => {
     app.use(authRoutes);
     app.use(userRoutes);
 
+
 }
