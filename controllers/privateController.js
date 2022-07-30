@@ -28,7 +28,6 @@ module.exports = {
             // asociar usuario al mensaje
             newTweet.author = user
             await newTweet.save()
-            console.log(newTweet)
 
             const tweetPopulated = await newTweet
                 .populate("author", "username")
