@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken")
 const User = require("../models/User");
 
+
+
 module.exports = {
     register: async (req, res) => {
         const email = req.body.email;
@@ -9,9 +11,9 @@ module.exports = {
         const username = req.body.username;
 
         try {
-            const newEmail = await User.findOne({ email })
 
-            if (newEmail === null) {
+            const newEmail = await User.findOne({ email })
+            if (!newEmail) {
                 const newUser = await User.create({
                     email,
                     password,
@@ -43,18 +45,18 @@ module.exports = {
         const password = req.body.password;
 
         try {
-
             const user = await User.findOne({ email });
             if (user === null) {
-                res.status(400).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })
+                res.status(401).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })
+                return
             }
 
             const match = await user.comparePassword(password);
+            const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET)
             if (match) {
-                const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET)
                 res.status(200).json({
-                    user,
                     token,
+                    user,
                 });
             } else {
                 res.status(401).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })

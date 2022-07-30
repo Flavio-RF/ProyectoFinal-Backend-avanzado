@@ -5,13 +5,9 @@ const User = require("../models/User")
 module.exports = {
     showTweets: async (req, res) => {
 
-        const id = req.auth.sub
-        const user = await User.findById(id)
-
-
         const tweets = await Tweet.find()
             .select("-_id -__v -updatedAT")
-            .populate("user", "id")
+            .populate("author", "username")
 
 
         res.status(200).json(tweets)
@@ -20,23 +16,23 @@ module.exports = {
     storeTweets: async (req, res) => {
         try {
             const id = req.auth.sub
-            const tweet = req.body.tweet
-
-            const newTweet = await Tweet.create({ tweet })
+            const newTweet = await Tweet.create({ text: req.body.text })
 
             // asociar mensaje al usuario
-            await User.findByIdAndUpdate(
+            const user = await User.findByIdAndUpdate(
                 id,
                 { $push: { tweet: newTweet._id } },
                 { upsert: true, new: true }
             );
 
             // asociar usuario al mensaje
-            newTweet.user = id
+            newTweet.author = user
             await newTweet.save()
+            console.log(newTweet)
 
             const tweetPopulated = await newTweet
-                .populate("user", "user")
+                .populate("author", "username")
+            console.log(tweetPopulated)
 
             res.status(201).json(tweetPopulated)
 

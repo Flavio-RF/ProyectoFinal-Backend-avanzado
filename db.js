@@ -12,9 +12,9 @@ module.exports = async () => {
         });
 
         await seeders();
-        await mongoose.connection.dropDatabase(() => {
-            console.log("reset")
-        })
+        // await mongoose.connection.dropDatabase(() => {
+        //     console.log("reset")
+        // })
 
     } catch (error) {
         console.error("Error al iniciar conexión con la base de datos.", error);
