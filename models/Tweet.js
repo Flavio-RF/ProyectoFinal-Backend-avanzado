@@ -23,3 +23,4 @@ const tweetSchema = new Schema(
 const Tweet = model("Tweet", tweetSchema);
 
 module.exports = Tweet;
+

@@ -19,7 +19,7 @@ module.exports = {
             const newTweet = await Tweet.create({ text: req.body.text })
 
             // asociar mensaje al usuario
-            const user = await User.findByIdAndUpdate(
+            let user = await User.findByIdAndUpdate(
                 id,
                 { $push: { tweet: newTweet._id } },
                 { upsert: true, new: true }
@@ -29,24 +29,16 @@ module.exports = {
             newTweet.author = user
             await newTweet.save()
 
-            const tweetPopulated = await newTweet
+            let tweetPopulated = await newTweet
                 .populate("author", "username")
-            console.log(tweetPopulated)
 
             res.status(201).json(tweetPopulated)
 
         } catch (error) {
             res.status(400).json(error)
             console.log(error)
-
         }
 
 
     },
-
-
-    // const user = await User.findOneAndUpdate(
-    //     { username: user.username },
-    //     { $push: {} }
-    // )
 }

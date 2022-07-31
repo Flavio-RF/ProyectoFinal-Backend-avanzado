@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose")
 const beautifyUnique = require("mongoose-beautiful-unique-validation")
 const bcrypt = require("bcryptjs")
+const validator = require("validator")
 
 const userSchema = new Schema(
     {
@@ -9,6 +10,9 @@ const userSchema = new Schema(
             trim: true,
             lowercase: true,
             unique: true,
+            required: [true, "El email es requerido"],
+            unique: true,
+            validate: [validator.isEmail, "El email es inválido"],
         },
         username: {
             type: String,

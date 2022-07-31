@@ -14,12 +14,12 @@ module.exports = {
 
             const newEmail = await User.findOne({ email })
             if (!newEmail) {
-                const newUser = await User.create({
+                let newUser = await User.create({
                     email,
                     password,
                     username,
                 })
-                const token = jwt.sign({ sub: newUser._id }, process.env.JWT_SECRET)
+                let token = jwt.sign({ sub: newUser._id }, process.env.JWT_SECRET)
                 return res.status(201).json({
                     token,
                     user: newUser,
@@ -45,13 +45,13 @@ module.exports = {
         const password = req.body.password;
 
         try {
-            const user = await User.findOne({ email });
-            if (user === null) {
+            let user = await User.findOne({ email });
+            if (!user) {
                 res.status(401).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })
                 return
             }
 
-            const match = await user.comparePassword(password);
+            let match = await user.comparePassword(password);
             const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET)
             if (match) {
                 res.status(200).json({
