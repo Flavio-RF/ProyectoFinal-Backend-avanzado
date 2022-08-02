@@ -29,10 +29,10 @@ module.exports = {
             newTweet.author = user
             await newTweet.save()
 
-            let tweetPopulated = await newTweet
+            await newTweet
                 .populate("author", "username")
 
-            res.status(201).json(tweetPopulated)
+            res.status(204).end();
 
         } catch (error) {
             res.status(400).json(error)

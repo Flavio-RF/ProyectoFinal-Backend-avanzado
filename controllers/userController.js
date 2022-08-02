@@ -14,15 +14,19 @@ module.exports = {
 
             const newEmail = await User.findOne({ email })
             if (!newEmail) {
-                let newUser = await User.create({
+                let user = await User.create({
                     email,
                     password,
                     username,
                 })
-                let token = jwt.sign({ sub: newUser._id }, process.env.JWT_SECRET)
+                let token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET)
                 return res.status(201).json({
                     token,
-                    user: newUser,
+                    user: {
+                        email: user.email,
+                        username: user.username,
+                        id: user._id,
+                    },
                 });
             } else {
                 res.status(401).json({ error: "El email ya existe" })
@@ -43,9 +47,11 @@ module.exports = {
     login: async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
+        const username = req.body.username
 
         try {
-            let user = await User.findOne({ email });
+            let user = await User.findOne(
+                { $or: [{ email }, { username }] });
             if (!user) {
                 res.status(401).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })
                 return
@@ -56,7 +62,11 @@ module.exports = {
             if (match) {
                 res.status(200).json({
                     token,
-                    user,
+                    user: {
+                        email: user.email,
+                        username: user.username,
+                        id: user._id,
+                    },
                 });
             } else {
                 res.status(401).json({ error: `No se encontro el email: ${email} o la contraseña es incorrecta.` })
